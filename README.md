@@ -263,4 +263,6 @@ This repository contains **documentation only**. It is the public reference for 
 - There is no source code to install, build, or audit in this repository.
 - The service is discoverable in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `com.tvc-mall/customer-mcp`.
 
+See [LICENSE](LICENSE) for the terms covering this documentation. In short: read, copy and quote it for your own use of the service; do not redistribute or republish it as your own.
+
 For access, a PAT, or a defect report, contact a TVCMall administrator.

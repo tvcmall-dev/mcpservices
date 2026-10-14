@@ -1,0 +1,45 @@
+Copyright (c) 2026 TVCMall. All rights reserved.
+
+This repository contains documentation for the TVCMall Customer MCP service and is
+published so that TVCMall customers and their MCP clients can configure and use the
+service.
+
+## Permitted use
+
+You may:
+
+- read, copy, and store this documentation for your own use of the service;
+- quote short excerpts of it, provided you attribute them to TVCMall and link back to
+  this repository;
+- reference this repository as the configuration reference for the service.
+
+## Not permitted without prior written permission from TVCMall
+
+You may not:
+
+- redistribute, republish, or mirror this documentation, in whole or in substantial
+  part, as your own or as part of another product or service;
+- modify it and present the modified version as official TVCMall documentation;
+- use the TVCMall name, logo, or branding outside of an accurate, factual reference to
+  this service.
+
+## No source code
+
+This repository contains no source code. The TVCMall Customer MCP server implementation
+is proprietary, is not published here, and is not licensed by this document. Hosted
+access to the service is governed by your agreement with TVCMall, not by this licence.
+
+## No warranty
+
+This documentation is provided "as is", without warranty of any kind. TVCMall is not
+liable for any loss arising from use of this documentation or of the service.
+
+## Trademarks
+
+TVCMall and the TVCMall logo are trademarks of TVCMall. All other product names,
+trademarks, and registered trademarks are the property of their respective owners.
+
+## Contact
+
+For access to the service, a personal access token, a defect report, or permission
+requests, contact a TVCMall administrator.
