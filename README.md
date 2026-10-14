@@ -152,19 +152,34 @@ Reference: [VS Code MCP configuration](https://code.visualstudio.com/docs/agent-
 
 ### Codex
 
+Codex needs **one extra feature flag** before it will speak this server's protocol revision. Without it Codex opens with the older `2025-06-18` handshake and the server rejects the connection with `-32022 Unsupported protocol version`.
+
 Edit `~/.codex/config.toml` (Windows: `%USERPROFILE%\.codex\config.toml`):
 
 ```toml
+[features]
+mcp_2026_07_28 = true
+
 [mcp_servers.tvcmall]
 url = "https://openai.tvc-mall.com/mcp"
 http_headers = { "TVCMALL_API_KEY" = "<TVCMALL_PAT>" }
 ```
 
-If `[mcp_servers.tvcmall]` already exists, update it rather than adding a second entry. Restart Codex, then verify:
+If either section already exists, add the missing key to it rather than creating a duplicate section. Restart Codex, then verify:
 
 ```bash
 codex mcp list
 ```
+
+> [!IMPORTANT]
+> `mcp_2026_07_28 = true` is required. This server implements protocol revision `2026-07-28` and does not serve older revisions, so a Codex without the flag fails at startup with:
+>
+> ```
+> handshaking with MCP server failed: JSON-RPC error: -32022:
+> Unsupported protocol version: 2025-06-18
+> ```
+>
+> Upgrading Codex does **not** remove the need for the flag; it is a feature toggle, not a version limitation.
 
 Reference: [Codex MCP documentation](https://learn.chatgpt.com/docs/extend/mcp).
 
