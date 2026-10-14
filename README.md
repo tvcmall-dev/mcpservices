@@ -2,7 +2,9 @@
 
 A remote, read-only [Model Context Protocol](https://modelcontextprotocol.io/) server that lets AI coding assistants query your own TVCMall account: products, shipping estimates, orders, tracking, points, and balance.
 
-**You do not install anything.** This is a hosted service. You point your MCP client at one HTTPS URL and supply a personal access token.
+**You do not install anything.** This is a hosted service. You point your MCP client at one HTTPS URL and supply a personal access token, which you generate yourself on the TVCMall website.
+
+📖 **Step-by-step setup guide: <https://www.tvcmall.com/ai-assistant-setup-guide>**
 
 | | |
 | --- | --- |
@@ -10,6 +12,7 @@ A remote, read-only [Model Context Protocol](https://modelcontextprotocol.io/) s
 | **Transport** | Streamable HTTP |
 | **Protocol revision** | `2026-07-28` |
 | **Authentication** | Personal PAT in the `TVCMALL_API_KEY` request header |
+| **Get a PAT** | <https://www.tvcmall.com/user/agentkeys> |
 | **Access** | Read-only. No writes, no file export. |
 
 ---
@@ -33,13 +36,21 @@ This service is **remote**: TVCMall hosts and operates it. Your client needs onl
 
 ### 1. Get a personal access token (PAT)
 
-Request a PAT from a TVCMall administrator through a secure channel. It looks like:
+Sign in to your TVCMall account and open:
+
+**<https://www.tvcmall.com/user/agentkeys>**
+
+Generate a personal access token there. It looks like:
 
 ```text
 tmcp_v1_{tokenId}.{secret}
 ```
 
-**Use your own PAT.** Do not share it and do not configure a company-wide token: every request is authorized as *you*, and the TVCMall backend decides what you may read.
+The setup guide walks through this with screenshots: <https://www.tvcmall.com/ai-assistant-setup-guide>
+
+**Generate your own PAT and keep it private.** Do not share it and do not use a company-wide token: every request is authorized as *you*, and the TVCMall backend decides what you may read.
+
+If you ever expose a token, revoke it on the same page and generate a new one.
 
 ### 2. Check your client
 
@@ -78,6 +89,8 @@ claude mcp add --transport http --scope user tvcmall \
 `--scope user` makes the server available in every project. Then restart Claude Code, run `/mcp`, and confirm `tvcmall` shows as connected.
 
 > ⚠️ The command line is recorded in your shell history. Do not run it in a shared terminal or while screen-recording.
+
+Once connected, `claude mcp list` shows the server, and `/mcp` inside a session shows its tools.
 
 To change the token later: `claude mcp remove tvcmall`, then add it again.
 
@@ -234,7 +247,7 @@ Order-list queries expose these fields directly: `begindate`, `enddate`, `keywor
 - Connect only over HTTPS. Never send a PAT to a plaintext endpoint.
 - Most clients store the PAT in a plain-text config file. Restrict access to that file and avoid shared devices. VS Code's `${input:...}` approach stores it more safely.
 - Never put a PAT in a URL, chat message, log, screenshot, or Git commit.
-- If you believe a PAT has leaked, contact a TVCMall administrator immediately to revoke and reissue it.
+- If you believe a PAT has leaked, revoke it immediately at <https://www.tvcmall.com/user/agentkeys> and generate a new one.
 
 ---
 
@@ -247,11 +260,12 @@ Order-list queries expose these fields directly: `begindate`, `enddate`, `keywor
 | `400` with `-32022 Unsupported protocol version` | The client speaks an older MCP revision. This server serves `2026-07-28` only — upgrade the client. |
 | `400` with `-32020 HeaderMismatch` | The client's request headers disagree with the request body. Update to a conforming `2026-07-28` client. |
 | `403 ORIGIN_NOT_ALLOWED` | The request carried an `Origin` header the server does not allow. Non-browser MCP clients do not send `Origin`; check for a proxy that adds one. |
-| `403 PERMISSION_DENIED` | Your PAT lacks the required permission, or the route is not enabled for it. Ask a TVCMall administrator to check your access. |
+| `403 PERMISSION_DENIED` | Your PAT lacks the required permission, or the route is not enabled for it. Check the token's scopes, then contact TVCMall support if they look correct. |
 | `429 RATE_LIMITED` | Requests are being sent too frequently. Wait and retry. |
 | `429 REQUEST_CAPACITY_REACHED` | The service is at its concurrent-request limit. Retry shortly. |
-| `API_UNAVAILABLE` | The TVCMall backend is temporarily unavailable, the network failed, or the request timed out. Retry; contact an administrator if it persists. |
+| `API_UNAVAILABLE` | The TVCMall backend is temporarily unavailable, the network failed, or the request timed out. Retry; contact TVCMall support if it persists. |
 | Claude Desktop cannot connect | Its connector UI cannot send `TVCMALL_API_KEY`. Use Claude Code, Cursor, VS Code, or Codex. |
+| Token lost, exposed, or expiring | Revoke it and generate a new one at <https://www.tvcmall.com/user/agentkeys>. |
 
 ---
 
@@ -263,6 +277,12 @@ This repository contains **documentation only**. It is the public reference for 
 - There is no source code to install, build, or audit in this repository.
 - The service is discoverable in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `com.tvc-mall/customer-mcp`.
 
-See [LICENSE](LICENSE) for the terms covering this documentation. In short: read, copy and quote it for your own use of the service; do not redistribute or republish it as your own.
+### Where to go next
 
-For access, a PAT, or a defect report, contact a TVCMall administrator.
+| I want to… | Go to |
+| --- | --- |
+| Generate or revoke a personal access token | <https://www.tvcmall.com/user/agentkeys> |
+| Follow the guided setup | <https://www.tvcmall.com/ai-assistant-setup-guide> |
+| Report a defect or ask for help | Contact TVCMall support |
+
+See [LICENSE](LICENSE) for the terms covering this documentation. In short: read, copy and quote it for your own use of the service; do not redistribute or republish it as your own.
